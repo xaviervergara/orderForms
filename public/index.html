@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control pedidos</title>
+  </head>
+  <body>
+    <h1>Bienvenid@ a control de pedidos</h1>
+    <form
+      action="/api/orderForm/upload"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <label for="">Cargar planilla:</label>
+      <input name="file" type="file" />
+      <button type="submit">Aceptar</button>
+    </form>
+  </body>
+</html>
