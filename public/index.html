@@ -4,17 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Control pedidos</title>
+    <link rel="stylesheet" href="./css/index.css" />
   </head>
   <body>
     <h1>Bienvenid@ a control de pedidos</h1>
-    <form
-      action="/api/orderForm/upload"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <label for="">Cargar planilla:</label>
-      <input name="file" type="file" />
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label for="file">Cargar planilla:</label>
+      <input id="fileInput" name="file" type="file" />
       <button type="submit">Aceptar</button>
     </form>
+    <script type="module" src="/js/index.js"></script>
   </body>
 </html>

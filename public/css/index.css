@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: rgb(47, 47, 47);
+  color: white;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+}
