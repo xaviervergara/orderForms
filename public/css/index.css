@@ -3,16 +3,113 @@
   padding: 0;
   box-sizing: border-box;
   background-color: rgb(47, 47, 47);
-  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: start;
+  font-family: monospace;
+  align-items: center;
+  padding: 1em;
+  background-color: rgb(251, 116, 152);
+  margin-bottom: 1em;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 2em;
+  background-color: rgb(251, 116, 152);
+  font-size: 2em;
+  color: white;
 }
 
 form {
+  margin-left: 5.8%;
+  width: 33%;
+  padding: 0.3em;
+  border-radius: 5px;
+  background-color: white;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   border: 1px solid white;
+  color: white;
+}
+
+.cant-item {
+  font-size: 1.5em;
+  color: rgb(66, 66, 66);
+  background-color: white;
+}
+
+.file-label {
+  font-size: 1.5em;
+  background-color: white;
+  color: rgb(47, 47, 47);
+  font-weight: bold;
+}
+
+.form-submit-btn {
+  font-size: 1.2em;
+  color: white;
+  margin: 0.5em;
+  padding: 0.2em;
+  background-color: rgb(66, 66, 66);
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: none;
+  text-align: center;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-file-label {
+  font-size: 1.2em;
+  margin: 0.5em;
+  padding: 0.2em;
+  background-color: rgb(66, 66, 66);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: none;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-file-label:hover {
+  background-color: rgb(251, 116, 152);
+  color: rgb(47, 47, 47);
+}
+
+.form-submit-btn:hover {
+  background-color: rgb(251, 116, 152);
+  color: rgb(47, 47, 47);
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  width: 90%;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+  grid-auto-rows: auto;
+  gap: 1px;
+}
+
+.header {
+  background-color: rgb(251, 116, 152);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.cell {
+  font-size: 0.8em;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
