@@ -3,14 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control pedidos</title>
     <link rel="stylesheet" href="./css/index.css" />
-    <title>Document</title>
   </head>
   <body>
     <header>
-      <a href="/index.html"> <h1>Bienvenid@ a control de pedidos</h1></a>
+      <h1>Bienvenid@ a control de pedidos</h1>
     </header>
-
     <section class="form-section">
       <form id="uploadForm" enctype="multipart/form-data">
         <label for="file"><p class="file-label">Cargar planilla:</p></label>
@@ -24,14 +23,18 @@
         <label for="fileInput" class="custom-file-label">Choose File</label>
         <button type="submit" class="form-submit-btn">Aceptar</button>
       </form>
-
-      <section class="list-section">
-        <div class="list-section-child">
-          <ul id="fileList"></ul>
-        </div>
-      </section>
+      <div>
+        <input id="skuEnter" class="sku-enter" type="text" />
+      </div>
+      <div>
+        <button id="sendOkItems">Finalizar carga</button>
+      </div>
     </section>
 
-    <script src="js/index.js"></script>
+    <main>
+      <div id="formContainer" class="form-container"></div>
+    </main>
+
+    <script type="module" src="./js/index.js"></script>
   </body>
 </html>

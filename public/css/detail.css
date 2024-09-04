@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
   background-color: rgb(47, 47, 47);
-  list-style-type: none;
 }
 
 a {
@@ -27,6 +26,36 @@ h1 {
   color: white;
 }
 
+.form-section {
+  justify-content: center;
+  margin-bottom: 1em;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  /* border: 1px solid white; */
+}
+
+.sku-enter {
+  background-color: rgb(66, 66, 66);
+  border: 2px solid rgb(251, 116, 152);
+  border-radius: 5px;
+  font-size: 1.5em;
+  margin-left: 1em;
+  color: white;
+  padding: 0.3em;
+}
+
+.file-name,
+.item-quantity {
+  margin-left: 0.5em;
+  color: white;
+  font-size: 1.3em;
+}
+
+.item-quantity {
+  margin-left: 3em;
+}
+
 form {
   margin-left: 5.8%;
   width: 33%;
@@ -39,11 +68,31 @@ form {
   color: white;
 }
 
+.cant-item {
+  font-size: 1.5em;
+  color: rgb(66, 66, 66);
+  background-color: white;
+}
+
 .file-label {
   font-size: 1.5em;
   background-color: white;
   color: rgb(47, 47, 47);
   font-weight: bold;
+}
+
+.form-submit-btn {
+  font-size: 1.2em;
+  color: white;
+  margin: 0.5em;
+  padding: 0.2em;
+  background-color: rgb(66, 66, 66);
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: none;
+  text-align: center;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .custom-file-label {
@@ -64,77 +113,11 @@ form {
   color: rgb(47, 47, 47);
 }
 
-.form-submit-btn {
-  font-size: 1.2em;
-  color: white;
-  margin: 0.5em;
-  padding: 0.2em;
-  background-color: rgb(66, 66, 66);
-  cursor: pointer;
-  border-radius: 5px;
-  box-shadow: none;
-  text-align: center;
-  border: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 .form-submit-btn:hover {
   background-color: rgb(251, 116, 152);
   color: rgb(47, 47, 47);
 }
 
-.list-section {
-  width: 100%;
-  margin-top: 2em;
-  display: flex;
-  justify-content: center;
-  /* border: 1px solid red; */
-}
-
-.list-section-child {
-  width: 90%;
-  display: flex;
-  justify-content: start;
-}
-
-.item-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  color: white;
-  font-family: monospace;
-  font-size: 1.3em;
-  margin: 1em;
-  padding: 0.3em;
-  /* border-bottom: 1px solid white; */
-}
-
-.item-list,
-.item-name,
-.item-status,
-.item-delete {
-  background-color: rgb(92, 92, 92);
-}
-
-.item-name {
-  grid-column: 1;
-  cursor: pointer;
-  transition: color 0.3s ease, color 0.3s ease;
-}
-
-.item-name:hover {
-  color: rgb(251, 116, 152);
-}
-
-.item-status {
-  grid-column: 3;
-}
-
-.item-delete {
-  grid-column: 4;
-}
-
-/** PLANILLA */
 main {
   display: flex;
   justify-content: center;
@@ -165,4 +148,18 @@ main {
   justify-content: center;
   align-items: center;
   padding: 10px;
+}
+
+.cell-ok {
+  font-size: 0.8em;
+  background-color: rgb(136, 205, 128);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#sendOkItems {
+  font-size: 2em;
 }
