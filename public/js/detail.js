@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const response = await fetch(`/api/orderForm/${fileId}`);
       const responseData = await response.json();
-      const { data, filename } = responseData;
+      const { data, filename, availableItems } = responseData;
 
       const usedRange = data.filter((e) => {
         if (e[0] || e[1] !== null) {
@@ -17,6 +17,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
 
+      //* Aca a traves del filtro obtenemos solo la columna con los skus
+      const skus = usedRange.map((e) => {
+        return e[1];
+      });
+
+      skus.shift(); //?Le sacamos el primer item que es "sku", nos quedamos solo con los codigos
+
+      //* De aca extraemos solo los skus
       const itemQuantity = usedRange.length - 1;
 
       document.getElementById(
@@ -37,7 +45,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
       });
 
-      //* // --- ROW GREEN CHECK ---
+      //* REVISA SI EL FILE DE LA PLANILLA TIENE "availableItems". DE SER ASI, YA LOS PINTA DE VERDE
+      //* APENAS SE ABRE LA PLANILLA. FUNCIONA COMO MEMORIA
+
+      const savedOkItems = await availableItems.map((e) => {
+        return document.getElementsByClassName(e);
+      });
+
+      savedOkItems.forEach((itemCollection) => {
+        for (let i = 0; i < itemCollection.length; i++) {
+          itemCollection[i].classList.add('cell-ok');
+        }
+      });
+
+      //* // --- PINTA DE VERDE LOS PRODUCTOS QUE SE INGRESAN CON EL LECTOR DE SKU ---
 
       //Obtenemos el input del front
       const skuEnter = document.getElementById('skuEnter');
@@ -46,13 +67,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('El elemento skuEnter no se encontró en el DOM');
         return;
       }
-
-      //Aca a traves del filtro obtenemos solo la columna con los skus
-      const skus = usedRange.map((e) => {
-        return e[1];
-      });
-
-      skus.shift(); //?Le sacamos el primer item que es "sku", nos quedamos solo con los codigos
 
       skuEnter.addEventListener('input', (e) => {
         let text = e.target.value;
@@ -82,6 +96,34 @@ document.addEventListener('DOMContentLoaded', async () => {
           }, 300);
         }
       });
+
+      //* --- GUARDA LOS ITEMS EXISTENTES AL BACKEND GUARDANDOLOS EN EL FILE DE LA PLANILLA PARA LUEGO RECUPERARLOS ---
+      document
+        .getElementById('sendOkItems')
+        .addEventListener('click', async (e) => {
+          const existingItems = document.getElementsByClassName('cell-ok');
+          let toArr = [...existingItems];
+
+          let rows = toArr.map((e) => {
+            return e.innerHTML;
+          });
+
+          const res = await fetch('/api/controlledOrder', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ rows, fileId: fileId }),
+          });
+
+          if (!res.ok) {
+            throw new Error('Error en la carga del archivo');
+          }
+
+          const result = await res.json();
+          console.log(result);
+          // window.location.href = '/api/controlledOrder';
+        });
     } catch (error) {
       formContainer.innerHTML =
         '<p>Error al obtener los detalles del archivo.</p>';

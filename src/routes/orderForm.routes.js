@@ -61,7 +61,11 @@ orderRoutes.get('/:id', async (req, res) => {
 
     // res.json(value);
 
-    res.json({ data: value, filename: file.filename });
+    res.json({
+      availableItems: file.availableItems,
+      data: value,
+      filename: file.filename,
+    });
   } catch (error) {
     res.status(500).json({ error: 'Error al procesar el archivo' });
   }

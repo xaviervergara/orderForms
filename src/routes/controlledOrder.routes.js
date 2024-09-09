@@ -9,15 +9,48 @@
 import { Router } from 'express';
 
 const contOrderRouter = Router();
+import { fileModel } from '../models/files.model.js';
 
-//*Post
+//*PUT
 
-let data = null;
+// let data = null;
 
-contOrderRouter.post('/', (req, res) => {
-  data = req.body;
+contOrderRouter.put('/', async (req, res) => {
+  const { rows, fileId } = req.body;
+  // console.log(rows);
 
-  res.send({ message: 'Data received', data: data });
+  function dividirArrayPorTamanio(array, n) {
+    const resultado = [];
+
+    for (let i = 0; i < array.length; i += n) {
+      resultado.push(array.slice(i, i + n));
+    }
+
+    return resultado;
+  }
+
+  const rowsDivididos = dividirArrayPorTamanio(rows, 10);
+
+  const availableSkus = rowsDivididos.map((e) => {
+    return e[1];
+  });
+
+  try {
+    const updatedFile = await fileModel.findOneAndUpdate(
+      { _id: fileId }, // Filtro para encontrar el archivo por ID
+      { $push: { availableItems: { $each: availableSkus } } }, // Usar $push para agregar elementos al array
+      { new: true } // Devuelve el documento actualizado
+    );
+
+    res.send({
+      message: 'Data received',
+      data: availableSkus,
+      fileID: fileId,
+      updatedFile,
+    });
+  } catch (error) {
+    res.status(500).send({ error: 'Error updating the file', details: error });
+  }
 });
 
 //* Get

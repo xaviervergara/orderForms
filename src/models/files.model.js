@@ -27,6 +27,14 @@ const fileSchema = mongoose.Schema({
     type: String,
     default: 'Pending',
   },
+  availableItems: {
+    type: Array,
+    default: [],
+  },
+  missingItems: {
+    type: Array,
+    default: [],
+  },
 });
 
 export const fileModel = mongoose.model(fileCollection, fileSchema);

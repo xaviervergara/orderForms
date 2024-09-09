@@ -7,6 +7,11 @@
 
 a {
   text-decoration: none;
+}
+
+h1 {
+  background-color: rgb(251, 116, 152);
+  font-size: 2em;
   color: white;
 }
 
@@ -20,19 +25,12 @@ header {
   margin-bottom: 1em;
 }
 
-h1 {
-  background-color: rgb(251, 116, 152);
-  font-size: 2em;
-  color: white;
-}
-
 .form-section {
   justify-content: center;
   margin-bottom: 1em;
   align-items: center;
   display: flex;
   width: 100%;
-  /* border: 1px solid white; */
 }
 
 .sku-enter {
@@ -54,68 +52,6 @@ h1 {
 
 .item-quantity {
   margin-left: 3em;
-}
-
-form {
-  margin-left: 5.8%;
-  width: 33%;
-  padding: 0.3em;
-  border-radius: 5px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  border: 1px solid white;
-  color: white;
-}
-
-.cant-item {
-  font-size: 1.5em;
-  color: rgb(66, 66, 66);
-  background-color: white;
-}
-
-.file-label {
-  font-size: 1.5em;
-  background-color: white;
-  color: rgb(47, 47, 47);
-  font-weight: bold;
-}
-
-.form-submit-btn {
-  font-size: 1.2em;
-  color: white;
-  margin: 0.5em;
-  padding: 0.2em;
-  background-color: rgb(66, 66, 66);
-  cursor: pointer;
-  border-radius: 5px;
-  box-shadow: none;
-  text-align: center;
-  border: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.custom-file-label {
-  font-size: 1.2em;
-  margin: 0.5em;
-  padding: 0.2em;
-  background-color: rgb(66, 66, 66);
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  box-shadow: none;
-  text-align: center;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.custom-file-label:hover {
-  background-color: rgb(251, 116, 152);
-  color: rgb(47, 47, 47);
-}
-
-.form-submit-btn:hover {
-  background-color: rgb(251, 116, 152);
-  color: rgb(47, 47, 47);
 }
 
 main {
