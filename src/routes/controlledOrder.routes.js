@@ -16,22 +16,10 @@ import { fileModel } from '../models/files.model.js';
 // let data = null;
 
 contOrderRouter.put('/', async (req, res) => {
-  const { rows, fileId } = req.body;
-  // console.log(rows);
+  const { cleanRows, fileId } = req.body;
 
-  function dividirArrayPorTamanio(array, n) {
-    const resultado = [];
-
-    for (let i = 0; i < array.length; i += n) {
-      resultado.push(array.slice(i, i + n));
-    }
-
-    return resultado;
-  }
-
-  const rowsDivididos = dividirArrayPorTamanio(rows, 10);
-
-  const availableSkus = rowsDivididos.map((e) => {
+  //Nos quedamos solo con los skus
+  const availableSkus = cleanRows.map((e) => {
     return e[1];
   });
 

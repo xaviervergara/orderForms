@@ -88,12 +88,12 @@ main {
 
 .cell-ok {
   font-size: 0.8em;
-  background-color: rgb(136, 205, 128);
+  background-color: rgb(203, 248, 196);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 #sendOkItems {

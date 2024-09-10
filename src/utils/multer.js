@@ -7,7 +7,8 @@ const storage = multer.diskStorage({
     cb(null, 'public/docs');
   },
   filename: (req, file, cb) => {
-    const filename = 'Pedido Fotografia del' + file.originalname.slice(-16);
+    const filename =
+      Date.now() + 'Pedido Fotografia del' + file.originalname.slice(-16);
     // const filename = Date.now() + file.originalname.split(' ').join('');
 
     cb(null, filename);

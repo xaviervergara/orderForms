@@ -59,8 +59,6 @@ orderRoutes.get('/:id', async (req, res) => {
     const workbook = await XlsxPopulate.fromFileAsync(file.path);
     const value = workbook.sheet('Hoja1').range('A1:J100').value();
 
-    // res.json(value);
-
     res.json({
       availableItems: file.availableItems,
       data: value,
