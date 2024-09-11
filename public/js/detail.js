@@ -13,13 +13,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       const responseData = await response.json();
       const { data, filename, availableItems } = responseData;
 
-      let usedRange = data.filter((e) => {
-        if (e[0] && e[1] !== null) {
-          return e;
-        }
-      });
+      //* Si los skus vienen sin el simbolo "%", lo agregamos
 
-      usedRange = usedRange.map((e) => {
+      const usedRangeParsed = data.map((e) => {
         // Verificar si el SKU tiene 11 caracteres y si no contiene el símbolo '%'
         if (e[1].length > 11 && !e[1].includes('%', 11)) {
           // Insertar el símbolo '%' en la posición 11
@@ -29,14 +25,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       //* Aca a traves del filtro obtenemos solo la columna con los skus
-      const skus = usedRange.map((e) => {
+      const skus = usedRangeParsed.map((e) => {
         return e[1];
       });
 
       skus.shift(); //?Le sacamos el primer item que es "sku", nos quedamos solo con los codigos
 
       //* Obtenemos la cantidad de productos totales en el pedido
-      const itemQuantity = usedRange.length - 1;
+      const itemQuantity = usedRangeParsed.length - 1;
 
       document.getElementById(
         'formSection'
@@ -45,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Renderizar los datos en `formContainer`
       let i = 0;
-      usedRange.forEach((element) => {
+      usedRangeParsed.forEach((element) => {
         element.forEach((e) => {
           if (i < 10) {
             formContainer.innerHTML += `<div class="header">${e}</div>`;

@@ -50,8 +50,8 @@ form {
   font-size: 1.2em;
   margin: 0.5em;
   padding: 0.2em;
-  background-color: rgb(66, 66, 66);
-  color: white;
+  background-color: #424242;
+  color: #ffffff;
   cursor: pointer;
   border-radius: 5px;
   box-shadow: none;
@@ -79,7 +79,7 @@ form {
 }
 
 .form-submit-btn:hover {
-  background-color: rgb(251, 116, 152);
+  background-color: #fb7498;
   color: rgb(47, 47, 47);
 }
 
@@ -132,6 +132,7 @@ form {
 
 .item-delete {
   grid-column: 4;
+  cursor: pointer;
 }
 
 /** PLANILLA */
@@ -151,7 +152,7 @@ main {
 
 .header {
   display: flex;
-  background-color: rgb(251, 116, 152);
+  background-color: #fb7498;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -166,3 +167,48 @@ main {
   align-items: center;
   padding: 10px;
 }
+
+/*! SWEET ALERT */
+
+/**  ALERTA DE ELIMINACION DE FILES */
+
+.swal2-popup-custom {
+  font-size: 0.8em;
+}
+
+.swal2-title-custom,
+.swal2-html-container {
+  color: white !important;
+  background-color: #424242;
+}
+
+.swal2-actions {
+  background-color: #424242;
+}
+
+.swal2-confirm-custom {
+  background-color: #6fd57d !important;
+  color: black !important ;
+}
+
+.swal2-icon-custom {
+  color: #fb7498 !important;
+  border-color: #fb7498 !important;
+  background-color: #424242 !important;
+}
+.swal2-cancel-custom {
+  background-color: rgb(191, 76, 76) !important;
+  color: black !important;
+}
+.swal2-icon-content {
+  background-color: #424242 !important;
+  font-size: 4em !important;
+  border-radius: 50px;
+}
+
+/* .swal2-html-container {
+  color: red !important;
+} */
+/* 'swal2-confirm-custom' */
+/* 'swal2-cancel-custom', */
+/* 'swal2-icon-custom', */

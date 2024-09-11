@@ -10,6 +10,8 @@ import { Router } from 'express';
 import { uploader } from '../utils/multer.js';
 import XlsxPopulate from 'xlsx-populate';
 import { fileModel } from '../models/files.model.js';
+import fs from 'fs';
+import path from 'path';
 
 const orderRoutes = Router();
 
@@ -59,13 +61,53 @@ orderRoutes.get('/:id', async (req, res) => {
     const workbook = await XlsxPopulate.fromFileAsync(file.path);
     const value = workbook.sheet('Hoja1').range('A1:J100').value();
 
+    let usedRange = value.filter((e) => {
+      if (e[0] && e[1] !== null) {
+        return e;
+      }
+    });
+
     res.json({
       availableItems: file.availableItems,
-      data: value,
+      data: usedRange,
       filename: file.filename,
     });
   } catch (error) {
     res.status(500).json({ error: 'Error al procesar el archivo' });
+  }
+});
+
+//* ---  DELETE para eliminar el archivo subido ---
+
+orderRoutes.delete('/:id', async (req, res) => {
+  try {
+    //DELETE DE FILESYSTEM
+    const file = await fileModel.findOne({ _id: req.params.id });
+
+    if (!file) {
+      return res.status(404).json({ error: 'Archivo no encontrado' });
+    }
+
+    //Eliminar el archivo
+
+    fs.unlink(file.path, async (err) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ error: 'Error al eliminar el archivo del sistema' });
+      }
+
+      // Eliminar la referencia de la base de datos después de haber eliminado el archivo
+      await fileModel.findByIdAndDelete(req.params.id);
+
+      res
+        .status(200)
+        .json({ message: 'Archivo y referencia eliminados correctamente' });
+    });
+
+    //DELETE DE LA BD
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar el archivo' });
   }
 });
 
