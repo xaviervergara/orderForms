@@ -75,34 +75,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
 
-      skuEnter.addEventListener('input', (e) => {
-        let text = e.target.value;
-        if (text.length >= 13) {
-          skus.forEach((e) => {
-            if (e === text) {
-              const itemOk = document.getElementsByClassName(`${text}`);
+      //* EMPIEZA
+      let timeout; // Variable para almacenar el temporizador
 
-              for (let i = 0; i < itemOk.length; i++) {
-                itemOk[i].classList.add('cell-ok');
-                itemOk[i].scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'center',
-                  inline: 'center',
-                });
+      skuEnter.addEventListener('input', (e) => {
+        // Limpiamos el temporizador previo si existe. Por las dudas que el scanner falle y entre caracter y caracter hayamas de 50ms
+        clearTimeout(timeout);
+        // Definir un pequeño retraso (por ejemplo, 50ms) para procesar el valor del input
+        timeout = setTimeout(() => {
+          let text = e.target.value.trim();
+          console.log('Si se ejecuta');
+          // Solo procesar si la longitud es 13 o 14
+          if (text.length === 13 || text.length === 14) {
+            skus.forEach((sku) => {
+              if (sku === text) {
+                const itemOk = document.getElementsByClassName(text);
+                for (let i = 0; i < itemOk.length; i++) {
+                  itemOk[i].classList.add('cell-ok');
+                  itemOk[i].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center',
+                  });
+                }
+
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                  });
+                }, 1000);
               }
-              setTimeout(() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
-              }, 1000);
-            }
-          });
-          setTimeout(() => {
-            e.target.value = '';
-          }, 300);
-        }
+            });
+
+            // Limpiar el campo de texto después de 300ms
+            setTimeout(() => {
+              e.target.value = '';
+            }, 300);
+          }
+        }, 50); // Ajusta este valor según la velocidad del escáner
       });
+
+      //*DEBOUNCING
+      //* Cada vez que ingresas un carácter en el input (ya sea manualmente o con el escáner),
+      //* el temporizador setTimeout comienza a contar. Este temporizador espera 50 milisegundos.
+
+      //* Si durante ese período de 50 milisegundos ingresa otro carácter, se "reinicia" el
+      //* temporizador, lo que significa que el temporizador anterior se cancela (usando clearTimeout)
+      //* y se crea uno nuevo que vuelve a empezar desde 0.
+
+      //*TERMINA
 
       //* --- ENVIA LOS ITEMS EXISTENTES AL BACKEND GUARDANDOLOS EN EL FILE DE LA PLANILLA PARA LUEGO RECUPERARLOS ---
       document
