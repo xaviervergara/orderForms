@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detalles del Archivo</title>
+    <title>Detalle Archivo</title>
     <link rel="stylesheet" href="./css/detail.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <header>
-      <a href="/"> <h1>Bienvenid@ a control de pedidos</h1></a>
+      <h1 id="goHomeTitle">Control de pedidos - Fotografía</h1>
     </header>
 
     <section id="formSection" class="form-section">
@@ -21,10 +22,14 @@
         />
       </div>
       <button id="sendOkItems">GUARDAR</button>
+      <button id="endControl">Finalizar control</button>
     </section>
 
     <main><div id="formContainer" class="form-container"></div></main>
 
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Script js SIEMPRE SE IMPORTA LUEGO DEL SOCKET EL SCRIPT DE JS-->
     <script type="module" src="./js/detail.js"></script>
   </body>
 </html>

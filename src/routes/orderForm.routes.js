@@ -1,21 +1,13 @@
-//!    █████████████████████████████████████████
-//!
-//!    LA DATA QUE LLEGA DEL POST NO SE ALMACENA
-//!    EN VARIABLES GLOBALES. SE VA A GUARDAR
-//!                EN SESIONES
-//!
-//!    ██████████████████████████████████████████
-
 import { Router } from 'express';
 import { uploader } from '../utils/multer.js';
 import XlsxPopulate from 'xlsx-populate';
 import { fileModel } from '../models/files.model.js';
 import fs from 'fs';
-import path from 'path';
+import { io } from '../app.js';
 
 const orderRoutes = Router();
 
-// POST para subir el archivo
+//* --- POST para subir el archivo ---
 orderRoutes.post('/upload', uploader.single('file'), async (req, res) => {
   try {
     const file = req.file;
@@ -27,6 +19,9 @@ orderRoutes.post('/upload', uploader.single('file'), async (req, res) => {
       size: file.size,
     };
 
+    // Emitir el evento de actualización a todos los clientes
+    io.emit('fileUploaded', newFile);
+
     await fileModel.create(newFile);
 
     res.json({ message: 'Archivo agregado', newFile });
@@ -35,7 +30,7 @@ orderRoutes.post('/upload', uploader.single('file'), async (req, res) => {
   }
 });
 
-//*  --- Get de los files ---
+//* --- Get de los files para mostrarlos listados en index ---
 
 orderRoutes.get('/files', async (req, res) => {
   try {
@@ -46,7 +41,7 @@ orderRoutes.get('/files', async (req, res) => {
   }
 });
 
-//* ---  GET para obtener los datos del archivo subido ---
+//* ---  GET para obtener los datos del archivo subido que los devuelve en detail.js en forma de tabla ---
 
 orderRoutes.get('/:id', async (req, res) => {
   try {
@@ -69,6 +64,7 @@ orderRoutes.get('/:id', async (req, res) => {
 
     res.json({
       availableItems: file.availableItems,
+      missingItems: file.missingItems,
       data: usedRange,
       filename: file.filename,
     });
@@ -77,12 +73,13 @@ orderRoutes.get('/:id', async (req, res) => {
   }
 });
 
-//* ---  DELETE para eliminar el archivo subido ---
+//* ---  DELETE para eliminar el archivo subido en index.js ---
 
 orderRoutes.delete('/:id', async (req, res) => {
   try {
     //DELETE DE FILESYSTEM
     const file = await fileModel.findOne({ _id: req.params.id });
+    const fileId = req.params.id;
 
     if (!file) {
       return res.status(404).json({ error: 'Archivo no encontrado' });
@@ -97,15 +94,15 @@ orderRoutes.delete('/:id', async (req, res) => {
           .json({ error: 'Error al eliminar el archivo del sistema' });
       }
 
+      //DELETE DE LA BD
       // Eliminar la referencia de la base de datos después de haber eliminado el archivo
       await fileModel.findByIdAndDelete(req.params.id);
+      io.emit('fileDeleted', { fileId });
 
       res
         .status(200)
         .json({ message: 'Archivo y referencia eliminados correctamente' });
     });
-
-    //DELETE DE LA BD
   } catch (error) {
     res.status(500).json({ error: 'Error al eliminar el archivo' });
   }

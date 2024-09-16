@@ -2,6 +2,7 @@ import express from 'express';
 import orderRoutes from './routes/orderForm.routes.js';
 import contOrderRouter from './routes/controlledOrder.routes.js';
 import mongoose from 'mongoose';
+import { Server } from 'socket.io';
 
 const PORT = 8080;
 
@@ -21,8 +22,24 @@ mongoose.connect(
 //Router
 app.use('/api/orderForm', orderRoutes);
 app.use('/api/controlledOrder', contOrderRouter);
-// app.use('/', viewsRouter);
 
-app.listen(PORT, () => {
+//* --- Socket.io ---
+const httpServer = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+const io = new Server(httpServer);
+
+io.on('connection', (socket) => {
+  console.log('A new client has connected');
+
+  socket.on('message', (data) => console.log(data));
+
+  // Escuchar el evento 'skuMarked' desde el cliente
+  socket.on('skuMarked', (data) => {
+    // Enviar el SKU marcado a todos los demás clientes conectados
+    socket.broadcast.emit('skuUpdated', data);
+  });
+});
+
+export { io };

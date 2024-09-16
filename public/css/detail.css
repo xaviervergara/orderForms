@@ -13,6 +13,7 @@ h1 {
   background-color: rgb(251, 116, 152);
   font-size: 2em;
   color: white;
+  cursor: pointer;
 }
 
 header {
