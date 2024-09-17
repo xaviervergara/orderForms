@@ -133,21 +133,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           const rowsDivididos = dividirArrayPorTamanio(rows, 10);
 
-          //* Esto es para no duplicar skus existentes en "availableItems",
-          //* al apretar el boton de guardar solo se van a guardar los skus
-          //* que no existan en el array "availableItems" y asi nos aseguramos
-          //* de no repetir.
-
-          const cleanRows = rowsDivididos.filter((element) => {
-            return !availableItems.includes(element[1]); // se compara sku contra sku
-          });
-
-          const res = await fetch('/api/controlledOrder', {
+          const res = await fetch('/api/controlledOrder/available', {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ cleanRows, fileId: fileId }),
+            body: JSON.stringify({ rowsDivididos, fileId: fileId }),
           });
 
           if (!res.ok) {
@@ -180,15 +171,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           const rowsDivididos = dividirArrayPorTamanio(rows, 10);
 
-          //* Esto es para no duplicar skus existentes en "availableItems",
-          //* al apretar el boton de guardar solo se van a guardar los skus
-          //* que no existan en el array "availableItems" y asi nos aseguramos
-          //* de no repetir.
-
-          const cleanRows = rowsDivididos.filter((element) => {
-            return !availableItems.includes(element[1]); // se compara sku contra sku
-          });
-
           //* Logica para almacenar los productos que no llegaron
           const allCells = document.querySelectorAll('.cell');
 
@@ -201,18 +183,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           const notFoundDataDividido = dividirArrayPorTamanio(notFoundData, 10);
 
-          const cleanNotFoundItems = notFoundDataDividido.filter((element) => {
-            return !missingItems.includes(element[1]); // se compara sku contra sku
-          });
-
-          const res = await fetch('/api/controlledOrder', {
+          const res = await fetch('/api/controlledOrder/missing', {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              cleanRows,
-              cleanNotFoundItems,
+              rowsDivididos,
+              notFoundDataDividido,
               fileId: fileId,
             }),
           });
@@ -230,11 +208,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             icon: 'success',
           }).then((res) => {
             if (res.isConfirmed) {
-              alert(`Cambios guardados en la BD`);
-              // window.location.href = '/';
+              // alert(`Cambios guardados en la BD`);
+              window.location.href = `/end-control.html?id=${fileId}`;
+              // window.location.href = `/detail.html?id=${fileId}`;
             }
           });
-          //* _________
         });
     } catch (error) {
       //! AQUI UN SWAL ALERT DE QUE NO SE ENCONTRO EL FILE

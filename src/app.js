@@ -1,6 +1,7 @@
 import express from 'express';
 import orderRoutes from './routes/orderForm.routes.js';
 import contOrderRouter from './routes/controlledOrder.routes.js';
+import endControlRouter from './routes/endControl.routes.js';
 import mongoose from 'mongoose';
 import { Server } from 'socket.io';
 
@@ -22,7 +23,7 @@ mongoose.connect(
 //Router
 app.use('/api/orderForm', orderRoutes);
 app.use('/api/controlledOrder', contOrderRouter);
-
+app.use('/api/endControl', endControlRouter);
 //* --- Socket.io ---
 const httpServer = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
