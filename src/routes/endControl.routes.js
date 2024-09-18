@@ -6,7 +6,7 @@ const endControlRouter = Router();
 //* POST PARA ENVIAR MAIL DE FALTANTES
 
 endControlRouter.post('/send-email', (req, res) => {
-  const { to, subject, text } = req.body;
+  const { to, subject, html } = req.body;
 
   // Configura el transporte con los detalles de Outlook
   //   let transporter = nodemailer.createTransport({
@@ -22,8 +22,8 @@ endControlRouter.post('/send-email', (req, res) => {
     port: 587, // Puerto SMTP con soporte STARTTLS
     secure: false, // Usar STARTTLS en lugar de SSL
     auth: {
-      user: '',
-      pass: '',
+      user: 'xvergara1212@outlook.com',
+      pass: 'ybnhldlmtlaymyyq',
     },
     tls: {
       ciphers: 'SSLv3', // Si hay problemas con la negociación TLS
@@ -32,10 +32,10 @@ endControlRouter.post('/send-email', (req, res) => {
 
   // Configura el mensaje
   let mailOptions = {
-    from: 'xvergara@arredo.com.ar',
+    from: 'xvergara1212@outlook.com',
     to: to, // Destinatario que recibe el correo
     subject: subject, // Asunto del correo
-    text: text, // Texto del correo
+    html: html, // Texto del correo
   };
 
   // Envía el correo
