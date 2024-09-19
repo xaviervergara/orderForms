@@ -6,7 +6,7 @@ const endControlRouter = Router();
 //* POST PARA ENVIAR MAIL DE FALTANTES
 
 endControlRouter.post('/send-email', (req, res) => {
-  const { to, subject, html } = req.body;
+  const { cc, to, subject, html } = req.body;
 
   // Configura el transporte con los detalles de Outlook
   //   let transporter = nodemailer.createTransport({
@@ -32,8 +32,9 @@ endControlRouter.post('/send-email', (req, res) => {
 
   // Configura el mensaje
   let mailOptions = {
-    from: 'xvergara1212@outlook.com',
+    from: 'Equipo de fotografía <xvergara1212@outlook.com>',
     to: to, // Destinatario que recibe el correo
+    cc: cc,
     subject: subject, // Asunto del correo
     html: html, // Texto del correo
   };

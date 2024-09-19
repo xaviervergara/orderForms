@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 },
                 body: JSON.stringify({
                   to: 'xvergara@arredo.com.ar',
+                  cc: 'xaviervergara00@gmail.com',
                   subject: `Faltantes pedido del ${date}`,
                   html: emailHtmlContent,
                 }),
@@ -146,6 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               },
               body: JSON.stringify({
                 to: 'xvergara@arredo.com.ar',
+                cc: 'xaviervergara00@gmail.com',
                 subject: `Pedido del ${date}: Todos los productos recibidos correctamente`,
                 html: `
                       <h1 style="color: #333333;background-color: #D9EAD3;font-family: roboto; display: inline-block; padding: .2em; border-radius:5px">Todos los productos recibidos correctamente</h1>

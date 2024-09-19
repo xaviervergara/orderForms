@@ -23,6 +23,18 @@ export async function updateFileList() {
       )
       .join('');
 
+    //Esto lo saque de gpt es para hacer la animacion del listado
+    // Obtener todos los elementos recién creados
+    const items = document.querySelectorAll('.item-list');
+
+    // Aplicar la animación de forma gradual pero desde arriba hacia abajo
+    items.forEach((item, index) => {
+      const reversedIndex = items.length - 1 - index; // Invertir el orden
+      setTimeout(() => {
+        item.classList.add('show'); // Añade la clase "show"
+      }, reversedIndex * 50); // El retraso se incrementa de abajo hacia arriba
+    });
+
     //* Agregar event listeners para redirigir a la página de detalles
     document.querySelectorAll('.item-name').forEach((item) => {
       item.addEventListener('click', () => {
