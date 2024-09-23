@@ -1,5 +1,5 @@
 import { showDeleteConfirmation } from './sweetalert-config.js';
-
+import { UserInfo } from '../common.js';
 const socket = io();
 
 const uploadForm = document.getElementById('uploadForm');
@@ -40,7 +40,7 @@ export async function updateFileList() {
       item.addEventListener('click', () => {
         const fileId = item.getAttribute('data-id');
         // Redirigir a la página de detalles
-        window.location.href = `/detail.html?id=${fileId}`;
+        window.location.href = `/detail/${fileId}`;
       });
     });
 
@@ -56,7 +56,17 @@ export async function updateFileList() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  //* ESTA SERIA LA IDEA PARA TENER LOS DATOS DEL USUARIO UNA SOLA VEZ EN LA PAGINA PRINCIPAL
+  //* SOLO UNA VEZ, Y LUEGO ACCEDERLOS EN TODAS LAS PAGINAS A TRAVES DEL LOCALSTORAGE
+  //! Ojo con este await, si no llegan a venir los datos me puede romper
+  await UserInfo();
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+  document.getElementById(
+    'datosDinamicos'
+  ).innerText = `${userInfo.first_name}`;
+
   uploadForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -68,12 +78,30 @@ document.addEventListener('DOMContentLoaded', () => {
         body: formData,
       });
 
-      if (response.ok) {
-        //* Actualiza la lista de archivos para incluir el archivo recién subido
-        await updateFileList();
-      }
+      // if (response.ok) {
+      //   //* Actualiza la lista de archivos para incluir el archivo recién subido
+      //   await updateFileList(); //!Hace que el listado se cargue 2 veces, se anime 2 veces
+      // }
     } catch (error) {
       console.error('Error al subir el archivo:', error);
+    }
+  });
+
+  document.getElementById('logOutBtn').addEventListener('click', async () => {
+    try {
+      const result = await fetch('/api/sessions/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      localStorage.clear();
+
+      const { redirect } = await result.json();
+      window.location.href = redirect;
+    } catch (error) {
+      console.error('Error during logout:', error);
     }
   });
 

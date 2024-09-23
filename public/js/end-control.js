@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  //Obtenemos la info del usuario
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
   // Obtener el ID de la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const fileId = urlParams.get('id');
+  const fileId = window.location.pathname.split('/').pop();
 
   if (fileId) {
     try {

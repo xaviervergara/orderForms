@@ -7,22 +7,14 @@ const endControlRouter = Router();
 
 endControlRouter.post('/send-email', (req, res) => {
   const { cc, to, subject, html } = req.body;
-
-  // Configura el transporte con los detalles de Outlook
-  //   let transporter = nodemailer.createTransport({
-  //     service: 'Outlook365',
-  //     auth: {
-  //       user: '', // Tu dirección de correo de Outlook
-  //       pass: '', // Tu contraseña de Outlook
-  //     },
-  //   });
+  const { email } = req.session.user;
 
   let transporter = nodemailer.createTransport({
     host: 'smtp.office365.com', // Servidor SMTP correcto para Outlook
     port: 587, // Puerto SMTP con soporte STARTTLS
     secure: false, // Usar STARTTLS en lugar de SSL
     auth: {
-      user: 'xvergara1212@outlook.com',
+      user: email,
       pass: 'ybnhldlmtlaymyyq',
     },
     tls: {
@@ -32,7 +24,7 @@ endControlRouter.post('/send-email', (req, res) => {
 
   // Configura el mensaje
   let mailOptions = {
-    from: 'Equipo de fotografía <xvergara1212@outlook.com>',
+    from: `Equipo de fotografía ${email}`,
     to: to, // Destinatario que recibe el correo
     cc: cc,
     subject: subject, // Asunto del correo

@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const formContainer = document.getElementById('formContainer');
 
   // Obtener el ID de la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const fileId = urlParams.get('id');
+  const fileId = window.location.pathname.split('/').pop();
 
   if (fileId) {
     try {
@@ -209,7 +208,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           }).then((res) => {
             if (res.isConfirmed) {
               // alert(`Cambios guardados en la BD`);
-              window.location.href = `/end-control.html?id=${fileId}`;
+              // window.location.href = `/end-control.html?id=${fileId}`; ESTE ERA
+              window.location.href = `/end-control/${fileId}`;
               // window.location.href = `/detail.html?id=${fileId}`;
             }
           });
