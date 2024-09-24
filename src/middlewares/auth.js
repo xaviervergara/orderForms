@@ -1,6 +1,5 @@
 // Middleware para verificar si el usuario está autenticado
 export function redirectIfAuthenticated(req, res, next) {
-  console.log('User session:', req.session.user);
   if (req.session.user) {
     return res.redirect('/'); // Redirigir al inicio si ya está logueado
   }
