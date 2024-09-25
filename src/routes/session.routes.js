@@ -100,4 +100,33 @@ sessionRoutes.get('/user-info', (req, res) => {
   res.send(userInfo);
 });
 
+//* AUTENTICACION CON AZURE
+
+// Ruta para redirigir al usuario a Microsoft
+sessionRoutes.get(
+  '/microsoft',
+  passport.authenticate('microsoft', {
+    failureRedirect: '/login',
+  })
+);
+
+// Ruta de callback después de la autenticación exitosa
+sessionRoutes.get(
+  '/oauthCallback',
+  passport.authenticate('microsoft', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Autenticación exitosa, guardar usuario en la sesión
+    const { email } = req.user;
+
+    req.session.user = {
+      email,
+      first_name: req.user.first_name || 'AzureUserFirstName', // Puedes manejarlo según lo que te devuelva Azure
+      last_name: req.user.last_name || 'AzureUserLastName', // Igual para el apellido
+    };
+
+    console.log('Authenticated user session:', req.session.user);
+    res.redirect('/');
+  }
+);
+
 export default sessionRoutes;
