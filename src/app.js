@@ -9,9 +9,9 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { Server } from 'socket.io';
 import { getVariables } from './config/dotenv.config.js';
+import { Command } from 'commander';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-import { Command } from 'commander';
 
 // const PORT = 8080;
 
@@ -52,7 +52,7 @@ app.use(
 //* =     PASSPORT     =
 //* ====================
 
-initializePassport();
+initializePassport(options);
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -13,5 +13,9 @@ export const getVariables = (options) => {
     mongoUrl: process.env.mongoURL,
     outlookPasswordApp: process.env.outlookPasswordApp,
     secret: process.env.sessionSecret,
+    uriUrl: process.env.uriUrl,
+    appId: process.env.appId,
+    tenantId: process.env.tenantId,
+    tokenSecret: process.env.tokenSecret,
   };
 };

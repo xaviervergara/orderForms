@@ -3,23 +3,26 @@ import local from 'passport-local';
 import { userModel } from '../models/users.model.js';
 import { createHash, isValidPassword } from '../utils/bcrypt.js';
 import { OIDCStrategy } from 'passport-azure-ad';
+import { getVariables } from './dotenv.config.js';
 
 const LocalStrategy = local.Strategy;
 
-// Valores de configuración de Azure AD
-const azureConfig = {
-  identityMetadata: `https://login.microsoftonline.com/b35231f2-66d7-4023-8d06-13cc1e1a49c0/v2.0/.well-known/openid-configuration`,
-  clientID: 'e0d2a69a-83af-4bbc-9ab0-0d33ea5baf81',
-  clientSecret: 'YdG8Q~vz~8D4o1oO~SP6bNbYYTg13J7kyNboLdqp', // Required only for auth code flow
-  responseType: 'code',
-  responseMode: 'query',
-  redirectUrl: 'http://localhost:8080/api/sessions/oauthCallback', // Esta es la URL donde Azure redirigirá al usuario
-  allowHttpForRedirectUrl: true, // Solo para desarrollo, para producción usa HTTPS
-  passReqToCallback: false,
-  scope: ['profile', 'email', 'openid'],
-};
+const initializePassport = (options) => {
+  const { uriUrl, appId, tenantId, tokenSecret } = getVariables(options);
 
-const initializePassport = () => {
+  // Valores de configuración de Azure AD
+  const azureConfig = {
+    identityMetadata: `https://login.microsoftonline.com/${tenantId}/v2.0/.well-known/openid-configuration`,
+    clientID: appId,
+    clientSecret: tokenSecret, // Required only for auth code flow
+    responseType: 'code',
+    responseMode: 'query',
+    redirectUrl: uriUrl, // Esta es la URL donde Azure redirigirá al usuario
+    allowHttpForRedirectUrl: true, // Solo para desarrollo, para producción usa HTTPS
+    passReqToCallback: false,
+    scope: ['profile', 'email', 'openid'],
+  };
+
   passport.use(
     'register',
     new LocalStrategy(

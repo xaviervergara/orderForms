@@ -6,17 +6,7 @@ import { ClientCredentials } from 'simple-oauth2';
 
 const endControlRouter = Router();
 
-// Configuración de OAuth2
-const client = new ClientCredentials({
-  client: {
-    id: 'e0d2a69a-83af-4bbc-9ab0-0d33ea5baf81', // Application (client) ID de Azure
-    secret: 'YdG8Q~vz~8D4o1oO~SP6bNbYYTg13J7kyNboLdqp', // Client Secret generado en Azure
-  },
-  auth: {
-    tokenHost: 'https://login.microsoftonline.com',
-    tokenPath: '/b35231f2-66d7-4023-8d06-13cc1e1a49c0/oauth2/v2.0/token', // Tenant ID de Azure
-  },
-});
+//*Obenemos las variables de entorno
 
 //* POST PARA ENVIAR MAIL DE FALTANTES
 
@@ -24,6 +14,19 @@ const client = new ClientCredentials({
 endControlRouter.post('/send-email', async (req, res) => {
   const { cc, to, subject, html } = req.body;
   const { email } = req.session.user;
+  const { appId, tenantId, tokenSecret } = getVariables(options);
+
+  // Configuración de OAuth2
+  const client = new ClientCredentials({
+    client: {
+      id: appId, // Application (client) ID de Azure
+      secret: tokenSecret, // Client Secret generado en Azure
+    },
+    auth: {
+      tokenHost: 'https://login.microsoftonline.com',
+      tokenPath: `/${tenantId}/oauth2/v2.0/token`, // Tenant ID de Azure
+    },
+  });
 
   try {
     // Obtener el token de acceso usando OAuth2
@@ -39,13 +42,16 @@ endControlRouter.post('/send-email', async (req, res) => {
       auth: {
         type: 'OAuth2',
         user: email, // El correo del usuario que envía
-        clientId: 'e0d2a69a-83af-4bbc-9ab0-0d33ea5baf81',
-        clientSecret: 'YdG8Q~vz~8D4o1oO~SP6bNbYYTg13J7kyNboLdqp',
-        accessToken: tokenResponse.token.access_token, // Access Token de OAuth2
+        clientId: appId,
+        clientSecret: tokenSecret,
+        accessToken: tokenResponse.token.access_token,
+        refreshToken: tokenResponse.token.refresh_token, // Si está disponible
+        expires: tokenResponse.token.expires_at.getTime(), // Access Token de OAuth2
       },
       debug: true, // Habilita el modo debug
       logger: true, // Habilita los logs
     });
+    console.log('Token expira en:', tokenResponse.token.expires_at);
 
     // Configura el mensaje
     const mailOptions = {
@@ -73,47 +79,3 @@ endControlRouter.post('/send-email', async (req, res) => {
 });
 
 export default endControlRouter;
-
-//*CODIGO ORIGINAL ANTES DE OAUTH2_____________________
-// endControlRouter.post('/send-email', (req, res) => {
-//   const { cc, to, subject, html } = req.body;
-//   const { email } = req.session.user;
-
-//   //*Obtenemos variables de entorno
-//   const { outlookPasswordApp } = getVariables(options);
-
-//   let transporter = nodemailer.createTransport({
-//     host: 'smtp.office365.com', // Servidor SMTP correcto para Outlook
-//     port: 587, // Puerto SMTP con soporte STARTTLS
-//     secure: false, // Usar STARTTLS en lugar de SSL
-//     auth: {
-//       user: email,
-//       pass: outlookPasswordApp,
-//     },
-//     tls: {
-//       ciphers: 'SSLv3', // Si hay problemas con la negociación TLS
-//     },
-//   });
-
-//   // Configura el mensaje
-//   let mailOptions = {
-//     from: `Equipo de fotografía ${email}`,
-//     to: to, // Destinatario que recibe el correo
-//     cc: cc,
-//     subject: subject, // Asunto del correo
-//     html: html, // Texto del correo
-//   };
-
-//   // Envía el correo
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       console.log('Error al enviar el correo:', error);
-//       res.status(500).send('Error al enviar el correo');
-//     } else {
-//       console.log('Correo enviado: ' + info.response);
-//       res.status(200).send('Correo enviado correctamente');
-//     }
-//   });
-// });
-
-// export default endControlRouter;
